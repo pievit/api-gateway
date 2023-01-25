@@ -11,7 +11,7 @@ RUN --mount=type=cache,target=/root/.m2 mvn -B -Dmaven.test.skip clean package
 #
 FROM openjdk:17-alpine
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 8761
 COPY --from=build /app/target/*.jar app.jar
 ENV JAVA_ARGS=""
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
