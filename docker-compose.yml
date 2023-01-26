@@ -10,7 +10,8 @@ services:
     networks:
       - opnet
     healthcheck:
-      test: [ "CMD", "nc", "-vz", "127.0.0.1", "8761","||","exit","1" ]
+#      test: [ "CMD", "nc", "-vz", "127.0.0.1", "8761","||","exit","1" ]
+      test: ["NONE"]
       interval: 30s
       timeout: 10s
       retries: 2
