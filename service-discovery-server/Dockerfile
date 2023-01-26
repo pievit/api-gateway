@@ -5,7 +5,8 @@ USER root
 COPY pom.xml .
 COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -B -Dmaven.test.skip clean package
-RUN apt-get -y update; apt-get -y install curl
+RUN apt-get -y update
+RUN apt-get -y install curl
 
 #
 # Package stage
