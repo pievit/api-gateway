@@ -14,4 +14,5 @@ WORKDIR /app
 EXPOSE 8080
 COPY --from=build /app/target/*.jar app.jar
 ENV JAVA_ARGS=""
+RUN apk update && apk upgrade && apk --no-cache add curl
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
