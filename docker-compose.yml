@@ -9,12 +9,7 @@ services:
       - "8761:8761"
     networks:
       - opnet
-    healthcheck:
-#      test: [ "CMD", "nc", "-vz", "127.0.0.1", "8761","||","exit","1" ]
-      test: ["NONE"]
-      interval: 30s
-      timeout: 10s
-      retries: 2
+
 
   api-gateway:
     build:
@@ -25,10 +20,13 @@ services:
       - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
     ports:
       - "8080:8080"
-
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "127.0.0.1:8761","||","exit","1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 2
     depends_on:
-      service-discovery-server:
-        condition: service_healthy
+      - service-discovery-server
 
     networks:
       - opnet
