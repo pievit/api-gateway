@@ -10,7 +10,7 @@ services:
     networks:
       - opnet
     healthcheck:
-      test: [ "CMD", "curl", "-f", "127.0.0.1:8761","||","exit","1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8761 || exit 1" ]
       interval: 30s
       timeout: 10s
       retries: 2
