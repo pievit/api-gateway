@@ -21,7 +21,7 @@ services:
 
     depends_on:
       service-discovery-server:
-        condition: service_completed_successfully
+        condition: service_started
 
     networks:
       - opnet
