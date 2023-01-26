@@ -10,7 +10,7 @@ services:
     networks:
       - opnet
     healthcheck:
-      test: [ "--start-period=10s","CMD", "curl", "-f", "http://localhost:8761" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:8761" ]
       interval: 30s
       timeout: 10s
       retries: 2
