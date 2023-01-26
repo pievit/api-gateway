@@ -5,7 +5,7 @@ USER root
 COPY pom.xml .
 COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -B -Dmaven.test.skip clean package
-RUN apt-get update && apt-get install -y curl
+
 #
 # Package stage
 #
@@ -14,4 +14,5 @@ WORKDIR /app
 EXPOSE 8761
 COPY --from=build /app/target/*.jar app.jar
 ENV JAVA_ARGS=""
+RUN apt-get update && apt-get install -y curl
 ENTRYPOINT exec java $JAVA_OPTS -jar app.jar
