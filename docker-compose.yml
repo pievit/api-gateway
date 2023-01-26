@@ -21,7 +21,7 @@ services:
 
     depends_on:
       service-discovery-server:
-        condition: service_started
+        condition: service_healthy
 
     networks:
       - opnet
