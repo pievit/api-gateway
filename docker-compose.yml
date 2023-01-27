@@ -31,11 +31,11 @@ services:
     networks:
       - opnet
 
-    rabbitmq:
-      image: rabbitmq:management
-      ports:
-        - "5672:5672"
-        - "15672:15672"
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 networks:
   opnet:
     driver: bridge
