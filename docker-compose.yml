@@ -21,7 +21,7 @@ services:
     container_name: api-gateway
     image: pievit/api-gateway:latest
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://172.18.0.2:8761/eureka/
     ports:
       - "8080:8080"
 
@@ -30,6 +30,12 @@ services:
         condition: service_healthy
     networks:
       - opnet
+
+    rabbitmq:
+      image: rabbitmq:management
+      ports:
+        - "5672:5672"
+        - "15672:15672"
 networks:
   opnet:
     driver: bridge
