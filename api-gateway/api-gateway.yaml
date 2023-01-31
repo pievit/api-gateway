@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
-          resource: { }
+          resources: { }
           env:
             - name: eureka.client.serviceUrl.defaultZone
               value: http://localhost:8761/eureka/
