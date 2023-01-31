@@ -22,10 +22,10 @@ spec:
           ports:
             - containerPort: 8080
           resource: { }
-          restartPolicy: Always
           env:
             - name: eureka.client.serviceUrl.defaultZone
               value: http://localhost:8761/eureka/
+      restartPolicy: Always
 
 ---
 apiVersion: v1
