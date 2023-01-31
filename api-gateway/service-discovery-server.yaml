@@ -1,38 +1,90 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: service-discovery-server
+  name: service-discovery-server-cm
+data:
+  # if you want to deploy n instances of eureka cluster,
+  # you should set eureka_service_address: http://eureka-0.eureka:8761/eureka,...,http://eureka-(n-1).eureka:8761/eureka
+  eureka_service_address: http://service-discovery-server-0.service-discovery-server:8761/eureka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-discovery-server-np
   labels:
-    io.kompose.service: service-discovery-server
+    app: service-discovery-server
 spec:
-  replicas: 1
+  type: NodePort
+  ports:
+    - port: 8761
+      nodePort: 30030
+      name: service-discovery-server
   selector:
-    matchLabels:
-      io.kompose.service: service-discovery-server
-  template:
-    metadata:
-      labels:
-        io.kompose.service: service-discovery-server
-    spec:
-      containers:
-        - name: service-discovery-server
-          image: pievit/service-discovery-server:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8761
-      restartPolicy: Always
+    app: service-discovery-server
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: service-discovery-server
   labels:
-    io.kompose.service: service-discovery-server
+    app: service-discovery-server
 spec:
-  type: LoadBalancer
+  clusterIP: None
   selector:
-    io.kompose.service: service-discovery-server
+    app: service-discovery-server
   ports:
-    - name: eureka
+    - name: service-discovery-server
       port: 8761
-      targetPort: 8761
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: service-discovery-server
+spec:
+  serviceName: 'service-discovery-server'
+  # n instances
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-discovery-server
+  template:
+    metadata:
+      labels:
+        app: service-discovery-server
+    spec:
+      containers:
+        - name: service-discovery-server
+          image: bitinit/eureka
+          ports:
+            - containerPort: 8761
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+            limits:
+              memory: "1200Mi"
+              cpu: "500m"
+          env:
+            - name: EUREKA_SERVER_ADDRESS
+              valueFrom:
+                configMapKeyRef:
+                  name: service-discovery-server-cm
+                  key: eureka_service_address
+            - name: ENVIRONMENT
+              value: "prod"
+            - name: JVM_OPTS
+              value: "-Xms1g -Xmx1g"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8761
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
