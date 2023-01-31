@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: api-gateway
   labels:
-    app: api-gateway
-  namespace: default
+    io.kompose.service: api-gateway
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api-gateway
+      io.kompose.service: api-gateway
+  strategy: { }
   template:
     metadata:
       labels:
-        app: api-gateway
+        io.kompose.service: api-gateway
     spec:
       containers:
         - name: api-gateway
@@ -21,20 +21,24 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
+          resource: { }
+          restartPolicy: Always
           env:
             - name: eureka.client.serviceUrl.defaultZone
               value: http://localhost:8761/eureka/
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: api-gateway
-  namespace: default
+  labels:
+    io.kompose.service: api-gateway
 spec:
   selector:
-    app: api-gateway
+    io.kompose.service: api-gateway
   ports:
-    - protocol: TCP
+    - protocol: api
       port: 8080
       targetPort: 8080
   type: LoadBalancer
