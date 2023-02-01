@@ -1,33 +1,11 @@
 services:
-  service-discovery-server:
-    build:
-      context: ./service-discovery-server/
-    container_name: service-discovery-server
-    image: pievit/service-discovery-server:latest
-    ports:
-      - "8761:8761"
-    networks:
-      - opnet
-    healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8761 || exit 1" ]
-      interval: 10s
-      timeout: 10s
-      retries: 2
-      start_period: 15s
-
   api-gateway:
     build:
       context: ./api-gateway/
     container_name: api-gateway
     image: pievit/api-gateway:latest
-    environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
     ports:
       - "8080:8080"
-
-    depends_on:
-      service-discovery-server:
-        condition: service_healthy
     networks:
       - opnet
 
