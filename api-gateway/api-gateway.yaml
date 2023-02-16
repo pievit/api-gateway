@@ -14,6 +14,13 @@ spec:
     spec:
       containers:
         - name: api-gateway
+          env:
+            - name: URI_PRENOTAZIONE
+              value: http://microservizi-prenotazione.default.svc.cluster.local:8080/
+            - name: URI_UTENTI
+              value: http://microservizi-utenti.default.svc.cluster.local:8080/
+            - name: URI_FRONTEND
+              value: http://front-end.default.svc.cluster.local:8080/
           image: pievit/api-gateway:latest
           imagePullPolicy: Always
           ports:
