@@ -5,9 +5,9 @@ services:
     container_name: api-gateway
     image: pievit/api-gateway:latest
     environment:
-      URI_UTENTI: http://localhost:8081/
-      URI_PRENOTAZIONE: http://localhost:8082/
-      URI_FRONTED: http://localhost:8083/
+      URI_UTENTI: http://microservizi-utenti:8080/
+      URI_PRENOTAZIONE: http://microservizi-prenotazioni:8080/
+      URI_FRONTED: http://front-end:8080/
     ports:
       - "8080:8080"
     networks:
