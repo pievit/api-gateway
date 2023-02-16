@@ -4,6 +4,7 @@ services:
       context: ./api-gateway/
     container_name: api-gateway
     image: pievit/api-gateway:latest
+    network_mode: bridge
     environment:
       URI_UTENTI: http://microservizi-utenti:8080/
       URI_PRENOTAZIONE: http://microservizi-prenotazioni:8080/
