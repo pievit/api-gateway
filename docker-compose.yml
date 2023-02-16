@@ -8,6 +8,6 @@ services:
     environment:
       URI_UTENTI: http://172.17.0.4:8080/
       URI_PRENOTAZIONE: http://microservizi-prenotazioni:8080/
-      URI_FRONTED: http://172.17.0.5:8080/
+      URI_FRONTED: http://172.17.0.2:8080/
     ports:
       - "8080:8080"
