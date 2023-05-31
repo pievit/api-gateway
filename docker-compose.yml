@@ -1,0 +1,22 @@
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    network_mode: bridge
+    depends_on:
+      - api-gateway
+  api-gateway:
+    build:
+      context: ./api-gateway/
+    container_name: api-gateway
+    image: pievit/api-gateway:latest
+    network_mode: bridge
+    environment:
+      URI_UTENTI: http://172.17.0.4:8080/
+      URI_PRENOTAZIONE: http://172.17.0.8:8080/
+      URI_FRONTEND: http://172.17.0.2:8080/
+    ports:
+      - "8080:8080"
